@@ -1,22 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter,IHasProgressBar
 {
     // 切菜的次数
-    [SerializeField] private Canvas cuttingBar;
+    [SerializeField] private MyProgressBar cuttingBar;
     private int cuttingCountNum;
-    public event EventHandler<EventArgsOnProgressBarChanged> OnProgeressBarChanged;
-    public class EventArgsOnProgressBarChanged : EventArgs
-    {
-        public float progressNormalized; // 注意到一个细节，如果public类里面不使用的public字段，不会触发未使用提醒。
-    }
-
-    public event EventHandler OnKitchenObjectPickUp;
+  
+    //public event EventHandler OnKitchenObjectPickUp;
     public event EventHandler OnCutting;
+
+    public event EventHandler<IHasProgressBar.EventArgsOnProgressBarChanged> OnProgressBarChanged;
+
     public override void Interact(Player player)
     {
         // 放下道具
@@ -26,7 +21,8 @@ public class CuttingCounter : BaseCounter
             kitchenObject.SetKitchenObjectHolder(this);
             if (kitchenObject.IsSliceable())
             {
-                OnProgeressBarChanged?.Invoke(this, new EventArgsOnProgressBarChanged
+                cuttingBar.gameObject.SetActive(true);
+                OnProgressBarChanged?.Invoke(this, new IHasProgressBar.EventArgsOnProgressBarChanged
                 {
                     progressNormalized = 0f
                 });
@@ -37,7 +33,8 @@ public class CuttingCounter : BaseCounter
         // 取走道具
         if (player.GetKitchenObject() == null && GetKitchenObject() != null)
         {
-            OnKitchenObjectPickUp?.Invoke(this, EventArgs.Empty);
+            cuttingBar.gameObject.SetActive(false);
+            //OnKitchenObjectPickUp?.Invoke(this, EventArgs.Empty);
             KitchenObject kitchenObject = GetKitchenObject();
             kitchenObject.SetKitchenObjectHolder(player);
             return;
@@ -55,7 +52,7 @@ public class CuttingCounter : BaseCounter
             cuttingCountNum ++ ;
             OnCutting?.Invoke(this,EventArgs.Empty);
 
-            OnProgeressBarChanged?.Invoke(this, new EventArgsOnProgressBarChanged()
+            OnProgressBarChanged?.Invoke(this, new IHasProgressBar.EventArgsOnProgressBarChanged()
             {
                 progressNormalized = (float)cuttingCountNum / kitchenObject.GetKitchenObjectCuttingCount()
             });

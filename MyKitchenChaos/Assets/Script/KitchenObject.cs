@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class KitchenObject : MonoBehaviour
@@ -12,6 +8,10 @@ public class KitchenObject : MonoBehaviour
     private IKichenHolder kichenHolder;
     public KitchenObjectSO GetKitchenObjectSO() { return kitchenObjectSO; }
 
+    /// <summary>
+    /// 转换 厨房用品的挂载对象
+    /// </summary>
+    /// <param name="kichenHolder"></param>
     public void SetKitchenObjectHolder(IKichenHolder kichenHolder)
     {
         if (this.kichenHolder != null)
@@ -49,4 +49,5 @@ public class KitchenObject : MonoBehaviour
     public KitchenObject GetSlicedObject() { return kitchenObjectSO.SliceObject; }
     public int GetKitchenObjectCuttingCount() { return kitchenObjectSO.TargetCuttinCountNum;}
 
+    public bool IsStovable(){ return kitchenObjectSO.isStovable;}
 }

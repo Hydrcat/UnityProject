@@ -1,10 +1,4 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Player : MonoBehaviour,IKichenHolder

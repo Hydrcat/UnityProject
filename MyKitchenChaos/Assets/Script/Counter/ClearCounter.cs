@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ClearCounter : BaseCounter
 {
     // 普通柜台的交互 - 放下道具 或者 取走已经存在的道具
